@@ -1,8 +1,8 @@
 module Main where
 
 import Lib
-import Day2
+import Day3
 
 main :: IO ()
-main = day2 
+main = day3 
 
