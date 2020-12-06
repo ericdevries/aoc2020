@@ -29,6 +29,7 @@ library
       Day2
       Day3
       Day4
+      Day5
       Lib
   other-modules:
       Paths_aoc2020
@@ -37,6 +38,7 @@ library
   build-depends:
       base >=4.7 && <5
     , regex-tdfa
+    , sort
     , split
   default-language: Haskell2010
 
@@ -51,6 +53,7 @@ executable aoc2020-exe
       aoc2020
     , base >=4.7 && <5
     , regex-tdfa
+    , sort
     , split
   default-language: Haskell2010
 
@@ -66,5 +69,6 @@ test-suite aoc2020-test
       aoc2020
     , base >=4.7 && <5
     , regex-tdfa
+    , sort
     , split
   default-language: Haskell2010
