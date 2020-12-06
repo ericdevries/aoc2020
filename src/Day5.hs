@@ -32,6 +32,7 @@ getSeatId (a,b) = a*8 + b
 maximum' :: Ord a => [a] -> a
 maximum' = foldr1 (\x y ->if x >= y then x else y)
 
+-- part 2, only return seats not present in list, but x+1 and x-1 exist
 validSeat :: [Int] -> Int -> Bool
 validSeat xs x = not (x `elem` xs) && (x-1) `elem` xs && (x+1) `elem` xs
 
