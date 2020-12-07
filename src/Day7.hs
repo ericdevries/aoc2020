@@ -55,21 +55,24 @@ recordBags (Record _ bags) = bags
 getRecord :: [Record] -> String -> Record
 getRecord xs s = (filter (\x -> (recordName x) == s) xs) !! 0
 
+getRecordBags :: [Record] -> Bag -> [Bag]
+getRecordBags records bag = concat (map recordBags (filter (\x -> (recordName x == (bagName bag))) records))
+
 findBagPath' :: [Record] -> String -> Bag -> Bool
 findBagPath' records s bag 
     | s == bname = True
-    | otherwise = True `elem` (map (\x -> findBagPath' records s x) (recordBags record))
+    | otherwise = True `elem` (map (\x -> findBagPath' records s x) (getRecordBags records bag))
     where bname = (bagName bag)
-          record = getRecord records bname
    
 -- recursive check if path leads to s  
 findBagPaths :: [Record] -> String -> Record -> Bool
 findBagPaths records s record = True `elem` (map (\x -> findBagPath' records s x) (recordBags record))
 
+
 -- return nodes that have a path to s 
 findBags :: String -> [Record] -> [Record]
 findBags s xs = filter (\x -> findBagPaths xs s x) xs
-
+--
 -- part 2, count total amount of bags (1 + node.count * (recusrive node.children))
 findBagCount :: [Record] -> String -> Int
 findBagCount records s = 
@@ -83,9 +86,7 @@ day7 = do
     let items = filter validLines (splitOn "\n" contents )
     putStrLn ("Items: " ++ (show items))
     let parsed = map parse items
-    putStrLn ("Parsed: " ++ (show parsed))
     let filtered = findBags "shiny gold" parsed 
-    putStrLn ("Filtered: " ++ (show filtered))
     putStrLn ("Filtered count: " ++ (show (length filtered)))
 
     let sum2 = (findBagCount parsed "shiny gold") - 1
