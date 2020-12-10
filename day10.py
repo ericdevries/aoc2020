@@ -61,6 +61,7 @@ def valid2(current, out, max_adapter):
 
     return total
 
+
 def valid3(items):
     sublists = []
     c = 0
@@ -70,10 +71,10 @@ def valid3(items):
         if i == 0:
             continue
 
-        if x - items[i-1] == 3:
+        if x - items[i - 1] == 3:
             sublists.append(items[c:i])
             c = i
-   
+
     sublists.append(items[c:])
 
     # sublists is now a list of lists, like so:
@@ -84,19 +85,30 @@ def valid3(items):
     for item in sublists:
         # check per sublist how many permutations are possible given constraints:
         # must be max +3 from the previous
-        # must be max -3 from the next 
+        # must be max -3 from the next
         r = valid2(last, item, max(item) + 3)
         last = max(item)
         results.append(r)
-
+    print(sublists)
+    print(results)
     # multiply all numbers in the result
     from operator import mul
     from functools import reduce
-    answer = reduce(mul, results, 1)
-    print(answer)
 
+    data = set(items).union({0})
+    answer = reduce(mul, results, 1)
+    dp = [0] * (max(data) + 4)
+    dp[0] = 1
+    for i in range(len(dp)):
+        dp[i] += dp[i - 1] if i - 1 in data else 0
+        dp[i] += dp[i - 2] if i - 2 in data else 0
+        dp[i] += dp[i - 3] if i - 3 in data else 0
+        print(dp)
+    print(dp[-1])
+    breakpoint()
 
     pass
+
 
 def task2():
     valid3(lines)
