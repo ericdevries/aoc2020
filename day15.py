@@ -2,19 +2,22 @@ from collections import defaultdict
 import time
 
 data = [6, 19, 0, 5, 7, 13, 1]
+#data = [0, 3, 6]
 count = 30000000
-history = defaultdict(list)
+history = dict()
 
 
 def getval(turn, prev):
+    new_value = 0
+
     if turn <= len(data):
-        return data[turn - 1]
-
-    his = history.get(prev, [])
-    if len(his) > 1:
-        return his[-1] - his[-2]
-
-    return 0
+        new_value = data[turn - 1]
+    
+    elif prev in history:
+        new_value = (turn - 1) - history[prev] 
+    
+    history[prev] = turn - 1
+    return new_value
 
 
 def task2():
@@ -23,7 +26,6 @@ def task2():
     for i in range(count):
         turn = i + 1
         prev = getval(turn, prev)
-        history[prev].append(turn)
     print(prev)
     print("finished in %s" % (time.time() - start))
 
