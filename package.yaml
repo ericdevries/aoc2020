@@ -24,6 +24,8 @@ dependencies:
 - regex-tdfa
 - split
 - sort
+- hashmap
+- containers
 
 
 library:
