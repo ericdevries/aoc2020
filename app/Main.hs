@@ -1,10 +1,10 @@
 module Main where
 
 import Lib
-import Day15
+import Day18
 
     
 
 main :: IO ()
-main = day15 
+main = day18 
 
