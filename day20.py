@@ -17,6 +17,8 @@ for item in data:
 
 def get_edges(field):
     # return top, right, bottom, left order
+    # order is always clockwise
+    # no matter how it is rotated, it will always return the same strings
     res = [field[0]]
     res.append("".join([r[-1] for r in field]))
     res.append(field[-1][::-1])
@@ -25,7 +27,8 @@ def get_edges(field):
     return res
 
 
-def get_possible_matches(items, tile, strict=False):
+# return all other fields that could possibly match the provided one
+def get_possible_matches(items, tile):
     field = items.get(tile)
     edges = get_edges(field)
     matches = set()
@@ -38,21 +41,19 @@ def get_possible_matches(items, tile, strict=False):
 
         for x in ed:
             if x in edges or x[::-1] in edges:
-                if strict and x not in edges:
-                    matches.add(k)
-                elif not strict:
-                    matches.add(k)
+                matches.add(k)
                 break
 
     return matches
 
 
+# return set of (other_id, this_side, other_side)
+# this_side = tile's side that would match this ID (1 through 4)
 def get_match_info(items, tile):
     field = items.get(tile)
     edges = get_edges(field)
     matches = set()
 
-    # return set of (other_id, this_side, other_side)
     for k, v in items.items():
         if k == tile:
             continue
@@ -67,10 +68,12 @@ def get_match_info(items, tile):
     return matches
 
 
+# flip vertically
 def flip(field):
     return [x[::-1] for x in field]
 
 
+# rotate clockwise
 def rotate(field, amount):
     if amount == 0:
         return field
@@ -87,6 +90,7 @@ def rotate(field, amount):
         ]
 
 
+# ensures all fields are correctly flipped relative to eachother
 def fix_mirrors():
     result = dict()
 
@@ -125,25 +129,6 @@ def fix_mirrors():
             done.add(key)
 
         queue = new_items
-
-    return result
-
-    for key in items.keys():
-        matches = get_possible_matches(items, key)
-
-        for m in matches:
-            e1 = get_edges(result[key])
-            e2 = get_edges(result[m])
-
-            for e in e1:
-                if e in e2 and e[::-1] not in e2:
-                    if m in done and key not in done:
-                        result[key] = flip(result[key])
-                    elif m not in done:
-                        result[m] = flip(result[m])
-                    break
-
-            done.add(m)
 
     return result
 
@@ -321,7 +306,8 @@ def task2():
                 hash_in_game = len(list(filter(lambda s: s == "#", "".join(overlay))))
 
                 print("answer2: %s" % hash_in_game)
-                pass
+                break
+
 
 task1()
 task2()
