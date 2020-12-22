@@ -54,7 +54,6 @@ def playgame(history, deck1, deck2, level=1):
         if exists(history[1], deck2):
             return 1, deck1, deck2
 
-
         print("-" * level, deck1, deck2)
         if len(deck1) == 0:
             print("-" * level, "returning")
