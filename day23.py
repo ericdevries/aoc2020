@@ -7,7 +7,6 @@ data = [int(i) for i in list("712643589")]
 
 class Node:
     def __init__(self, value):
-        self.left = None
         self.right = None
         self.value = value
 
@@ -82,6 +81,9 @@ def task1():
 
 
 def task2():
+    import time
+
+    start = time.time()
     data2 = copy.deepcopy(data)
     data2 = data2 + [i for i in range(max(data2) + 1, 1000000 + 1)]
 
@@ -98,9 +100,9 @@ def task2():
 
         prev = n
 
+    print("parsed in %s" % (time.time() - start))
     first = reflist[data2[0]]
     last = reflist[data2[-1]]
-    first.left = last
     last.right = first
 
     node = first
@@ -132,20 +134,19 @@ def task2():
         # add remainder up to target to current node's right
         right = node.right
         node.right = remainder
-        remainder.left = node
 
         # add the 3 items after the next_node (target value)
         right = next_node.right
         next_node.right = take[0]
-        take[0].left = next_node
         take[-1].right = right
-        right.left = take[-1]
-    
+
         # move to the next node
         node = node.right
-    
+
     answer = reflist[1].right.value * reflist[1].right.right.value
-    print('answer: %s' % (answer))
+    print("answer: %s" % (answer))
+    print("processed in %s" % (time.time() - start))
+
 
 task1()
 task2()
